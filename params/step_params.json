@@ -15,6 +15,7 @@
             "substep_name":"model_pack.ipynb",
             "substep_params":
             {
+                "save_best": false
             }
         }
     ]
