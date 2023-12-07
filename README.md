@@ -1,4 +1,4 @@
-# Step CV-Pipeline: model_pack [RU](README_RU.md)
+# Step CV-Pipeline: model_pack
 
 This CV-Pipeline component is designed to convert the model into various formats (Onnx, OpenVino, TensorRT, etc.) and package the model in BentoService.   
 When using the Binary Service, only the weights and the necessary files - configs for launching the service - are packaged.    
