@@ -21,14 +21,14 @@ bento_service, сервис упакованной модели через Bento
 
 ### Создать директорию для проекта (или использовать уже существующую)
 ```
-mkdir yolox_mmdet
-cd yolox_mmdet
+mkdir obj_detect_binary
+cd obj_detect_binary
 ```  
 
 ### склонировать репозиторий model_pack
 ```
-git clone --recurse-submodules https://gitlab.com/yolox_mmdet/model_pack.git {dir_name for model_pack}
-cd model_pack
+git clone --recurse-submodules https://github.com/4-DS/obj_detect_binary-model_pack.git {dir_for_model_pack}
+cd {dir_for_model_pack}
 ```  
 
 ### запустить шаг CV-Pipeline:model_pack

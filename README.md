@@ -22,14 +22,14 @@ bento_service, packaged model service via BentoML (saved as a zip archive)
 
 ### Create a directory for the project (or use an existing one)
 ```
-mkdir yolox_mmdet
-cd yolox_mmdet
+mkdir obj_detect_binary
+cd obj_detect_binary
 ```  
 
 ### clone the repository: model_pack
 ```
-git clone --recurse-submodules https://gitlab.com/yolox_mmdet/model_pack.git {dir name for model_pack}
-cd model_pack
+git clone --recurse-submodules https://github.com/4-DS/obj_detect_binary-model_pack.git {dir_for_model_pack}
+cd {dir_for_model_pack}
 ```  
 
 ### run step CV-Pipeline:model_pack
