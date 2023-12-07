@@ -1,8 +1,10 @@
 # Step CV-Pipeline: model_pack
 
-This CV-Pipeline component is designed to convert the model into various formats (Onnx, OpenVino, TensorRT, etc.) and package the model in BentoService.   
-When using the Binary Service, only the weights and the necessary files - configs for launching the service - are packaged.    
-When using the REST API, in addition to packaging in the artifact bentoservice, the rest method predict, test_data, test_result is described   
+During the CV Pipeline Model_Pack stage, the following steps take place:
+1. Model conversion     
+   The model trained in the previous CV-Pipeline Model_Train stage is converted into a format suitable for specific scenarios. For example, if the REST CV-Pipeline scenario is chosen, the model may be converted into the ONNX format, which enables deploying the model as a REST service. In the case of the Binary CV-Pipeline scenario, the model can be passed in PyTorch or another format in which it was trained.
+2. Packaging into bentoservice     
+   After model conversion, the model weights and all necessary artifacts (e.g., test image, predictions on the test image) are packaged into bentoservice. Packaging into bentoservice allows creating a containerized application that can be easily deployed and used for inference (prediction) on new data.
 
 Input data for step CV-Pipeline: model_pack
 - **obj_detect_inference_files**     
