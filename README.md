@@ -1,5 +1,3 @@
-![interface model_pack_interface.drawio](./imgs/model_pack_interface.drawio.png)
-
 # Step CV-Pipeline: model_pack [RU](README_RU.md)
 
 This CV-Pipeline component is designed to convert the model into various formats (Onnx, OpenVino, TensorRT, etc.) and package the model in BentoService.   

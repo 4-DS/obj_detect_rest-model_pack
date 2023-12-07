@@ -1,5 +1,3 @@
-![interface model_pack_interface.drawio](./imgs/model_pack_interface.drawio.png)
-
 # Step CV-Pipeline: model_train [EN](README.md)
 
 Данная компонент CV-Pipeline предназначен для конвертирования модели в различные форматы (Onnx, OpenVino, TensorRT и др) и упаковка модели в BentoService.      
