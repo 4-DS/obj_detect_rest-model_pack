@@ -2,7 +2,7 @@
 
 During the CV Pipeline Model_Pack stage, the following steps take place:
 1. Model conversion     
-   The model trained in the previous CV-Pipeline Model_Train stage is converted into a format suitable for specific scenarios. For example, if the REST CV-Pipeline scenario is chosen, the model may be converted into the ONNX format, which enables deploying the model as a REST service. In the case of the Binary CV-Pipeline scenario, the model can be passed in PyTorch or another format in which it was trained.
+   The model trained in the previous CV-Pipeline Model_Train stage is converted into a format suitable for specific scenarios. For example, if the REST CV-Pipeline scenario is chosen, the model may be converted into the ONNX format, which enables deploying the model as a REST service.
 2. Packaging into bentoservice     
    After model conversion, the model weights and all necessary artifacts (e.g., test image, predictions on the test image) are packaged into bentoservice. Packaging into bentoservice allows creating a containerized application that can be easily deployed and used for inference (prediction) on new data.
 
@@ -18,13 +18,13 @@ bento_service, packaged model service via BentoML (saved as a zip archive)
 
 ### Create a directory for the project (or use an existing one)
 ```
-mkdir obj_detect_binary
-cd obj_detect_binary
+mkdir -p obj_detect_rest
+cd obj_detect_rest
 ```  
 
 ### clone the repository: model_pack
 ```
-git clone --recurse-submodules https://github.com/4-DS/obj_detect_binary-model_pack.git {dir_for_model_pack}
+git clone --recurse-submodules https://github.com/4-DS/obj_detect_rest-model_pack.git{dir_for_model_pack}
 cd {dir_for_model_pack}
 ```  
 
