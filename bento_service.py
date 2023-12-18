@@ -3,6 +3,7 @@ from bentoml.adapters import JsonInput, FileInput
 from bentoml.service.artifacts.common import TextFileArtifact, JSONArtifact
 
 from sinara.bentoml_artifacts import OnnxModelArtifact, BinaryFileArtifact
+from sinara.bentoservice_profiles import SinaraOnnxBentoService
 
 from typing import List, BinaryIO
 import io
@@ -19,8 +20,9 @@ from PIL import Image
     BinaryFileArtifact('test_result', file_extension=".pkl"),
     TextFileArtifact('service_version',
                              file_extension='.txt',
-                             encoding='utf8')]) # for versions of bentoml 0.13 and newer 
+                             encoding='utf8')]) # for versions of bentoml 0.13 and newer
 
+@SinaraOnnxBentoService()
 class ModelService(BentoService): 
     def __init__(self, categories, input_size=(640, 640)):
         super().__init__() 
