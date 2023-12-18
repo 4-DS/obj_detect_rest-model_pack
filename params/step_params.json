@@ -7,7 +7,16 @@
     },
     "step_params":
     {
-        "step_name": "model_pack"
+        "step_name": "model_pack",
+        "export_params":
+                 {
+                    "confidence_threshold"       : 0.005,
+                    "iou_threshold"              : 0.5,
+                    "keep_top_k"                 : 100,
+                    "max_output_boxes_per_class" : 200,
+                    "pre_top_k"                  : 5000,
+                    "score_threshold"            : 0.01
+                }
     },
     "substeps_params":
     [        
@@ -15,7 +24,8 @@
             "substep_name":"model_pack.ipynb",
             "substep_params":
             {
-                "save_best": false
+                "save_best": false,
+                "device": "cuda:0"
             }
         }
     ]
