@@ -20,14 +20,16 @@ from PIL import Image
     BinaryFileArtifact('test_result', file_extension=".pkl"),
     TextFileArtifact('service_version',
                              file_extension='.txt',
-                             encoding='utf8')]) # for versions of bentoml 0.13 and newer
+                             encoding='utf8'),
+    JSONArtifact("categories"),
+    JSONArtifact("input_size")
+    
+    ]) # for versions of bentoml 0.13 and newer
+    
 
 @SinaraOnnxBentoService()
 class ModelService(BentoService): 
-    def __init__(self, categories, input_size=(640, 640)):
-        super().__init__() 
-        self.pre_post_processing = PrePostProcessing(categories, input_size)
-        
+    
     @api(input=JsonInput(), batch=False)
     def service_version(self, *args): 
         """ Return version of a running service """
@@ -43,8 +45,11 @@ class ModelService(BentoService):
     
     @api(input=FileInput(), batch=False)
     def predict(self, file_stream):
+        pre_post_processing = PrePostProcessing(categories = self.artifacts.categories,
+                                                input_size = self.artifacts.input_size)
+        
         # preprocessing image
-        processing_img, scale_factors, img_ori_size = self.pre_post_processing.prep_processing(file_stream)
+        processing_img, scale_factors, img_ori_size = pre_post_processing.prep_processing(file_stream)
         
         # inference onnx 
         input_name = self.artifacts.model.get_inputs()[0].name
@@ -52,7 +57,7 @@ class ModelService(BentoService):
         predicts = self.artifacts.model.run(output_name, {input_name: processing_img})  
         
         # postprocessing predicts
-        predicts = self.pre_post_processing.post_processing(predicts, scale_factors, img_ori_size)
+        predicts = pre_post_processing.post_processing(predicts, scale_factors, img_ori_size)
         return predicts
         
         
