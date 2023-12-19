@@ -2,13 +2,8 @@ from bentoml import env, artifacts, api, BentoService
 from bentoml.adapters import JsonInput, FileInput
 from bentoml.service.artifacts.common import TextFileArtifact, JSONArtifact
 
-#import os
-#import sys
-#sinara_path = os.path.abspath('./sinara')
-#sys.path.append(sinara_path)
-
-from bentoml_artifacts import OnnxModelArtifact, BinaryFileArtifact
-from bentoservice_profiles import SinaraOnnxBentoService
+# All code needed for SinaraML BentoService profiles is managed by SinaraML team
+from sinara.bentoservice import OnnxModelArtifact, BinaryFileArtifact, SinaraOnnxBentoService
 
 from typing import List, BinaryIO
 import io

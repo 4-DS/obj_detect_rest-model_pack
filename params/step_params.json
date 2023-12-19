@@ -7,7 +7,6 @@
     },
     "step_params":
     {
-        "step_name": "model_pack",
         "export_params":
                  {
                     "iou_threshold"              : 0.5,
