@@ -3,7 +3,7 @@ from bentoml.adapters import JsonInput, FileInput
 from bentoml.service.artifacts.common import TextFileArtifact, JSONArtifact
 
 # All code needed for SinaraML BentoService profiles is managed by SinaraML team
-from sinara.bentoservice import OnnxModelArtifact, BinaryFileArtifact, SinaraOnnxBentoService
+from sinara.bentoservice import *
 
 from typing import List, BinaryIO
 import io
