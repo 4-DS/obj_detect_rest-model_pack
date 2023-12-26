@@ -13,78 +13,27 @@ import cv2
 from PIL import Image
 
 
-@env(infer_pip_packages=True)
-@artifacts([
-    OnnxModelArtifact('model', backend='onnxruntime'),
-    BinaryFileArtifact('test_image', file_extension='.jpg'),
-    BinaryFileArtifact('test_result', file_extension=".pkl"),
-    TextFileArtifact('service_version',
-                             file_extension='.txt',
-                             encoding='utf8'),
-    JSONArtifact("categories"),
-    JSONArtifact("input_size")
-    
-    ]) # for versions of bentoml 0.13 and newer
-    
-
-@SinaraOnnxBentoService()
-class ModelService(BentoService): 
-    
-    @api(input=JsonInput(), batch=False)
-    def service_version(self, *args): 
-        """ Return version of a running service """
-        return self.artifacts.service_version
-    
-    @api(input=JsonInput())
-    def test_data(self, *args): # return some data for running a test
-        return self.artifacts.test_image
-    
-    @api(input=JsonInput(), batch=False)
-    def test_result(self, *args): # return result data for a test data
-        return self.artifacts.test_result    
-    
-    @api(input=FileInput(), batch=False)
-    def predict(self, file_stream):
-        pre_post_processing = PrePostProcessing(categories = self.artifacts.categories,
-                                                input_size = self.artifacts.input_size)
-        
-        # preprocessing image
-        processing_img, scale_factors, img_ori_size = pre_post_processing.prep_processing(file_stream)
-        
-        # inference onnx 
-        input_name = self.artifacts.model.get_inputs()[0].name
-        output_name = [out.name for out in self.artifacts.model.get_outputs()]
-        predicts = self.artifacts.model.run(output_name, {input_name: processing_img})  
-        
-        # postprocessing predicts
-        predicts = pre_post_processing.post_processing(predicts, scale_factors, img_ori_size)
-        return predicts
-        
-        
 class PrePostProcessing:
-    def __init__(self, categories, input_size=(640,640)):
-        self.categories = categories
-        self.input_size = input_size
     
-    def prep_processing(self, file_stream):     
+    def prep_processing(self, file_stream, input_size=(640,640)):     
         pil_img=Image.open(file_stream)
         image_array = np.asarray(pil_img)
         image_array = image_array[...,::-1] # to bgr
         img_ori_size = image_array.shape[:2]
-        resized = cv2.resize(image_array, self.input_size).astype(np.float32)
+        resized = cv2.resize(image_array, input_size).astype(np.float32)
         
-        scale_y, scale_x = self.input_size[0]/img_ori_size[0], self.input_size[1]/img_ori_size[1]
+        scale_y, scale_x = input_size[0]/img_ori_size[0], input_size[1]/img_ori_size[1]
         scale_factors = [scale_x, scale_y]*2
         processing_img = resized.transpose(2,0,1)[np.newaxis, ...].astype(np.float32)
         return processing_img, scale_factors, img_ori_size
     
-    def post_processing(self, predicts, scale_factors, img_ori_size):        
+    def post_processing(self, predicts, scale_factors, img_ori_size, categories):        
         scale_x, scale_y = scale_factors[:2]
         dets, labels = predicts
         dets = dets/np.array(scale_factors+[1.0])
         image_meta = {"file_name": "unknown.jpg", "id": 1, "img_size":  img_ori_size}
         coco_predict = self.convert_inference_results_to_coco(dets[0], labels[0], image_meta)    
-        coco_predict["categories"] = self.categories
+        coco_predict["categories"] = categories
         return coco_predict 
     
     @staticmethod
@@ -150,4 +99,55 @@ class PrePostProcessing:
             #'CLASSES_COUNT': len(loaded_categories),
             'annotations': annotations
         }
+    
+pre_post_processing = PrePostProcessing()
+
+@env(infer_pip_packages=True)
+@artifacts([
+    OnnxModelArtifact('model', backend='onnxruntime'),
+    BinaryFileArtifact('test_image', file_extension='.jpg'),
+    BinaryFileArtifact('test_result', file_extension=".pkl"),
+    TextFileArtifact('service_version',
+                             file_extension='.txt',
+                             encoding='utf8'),
+    JSONArtifact("categories"),
+    JSONArtifact("input_size")
+    
+    ]) # for versions of bentoml 0.13 and newer
+    
+@SinaraOnnxBentoService()
+class ModelService(BentoService): 
+    
+    @api(input=JsonInput(), batch=False)
+    def service_version(self, *args): 
+        """ Return version of a running service """
+        return self.artifacts.service_version
+    
+    @api(input=JsonInput())
+    def test_data(self, *args): # return some data for running a test
+        return self.artifacts.test_image
+    
+    @api(input=JsonInput(), batch=False)
+    def test_result(self, *args): # return result data for a test data
+        return self.artifacts.test_result    
+    
+    @api(input=FileInput(), batch=False)
+    def predict(self, file_stream):
+        # pre_post_processing = PrePostProcessing(categories = self.artifacts.categories,
+        #                                         input_size = self.artifacts.input_size)
+        
+        # preprocessing image
+        processing_img, scale_factors, img_ori_size = pre_post_processing.prep_processing(file_stream, input_size = self.artifacts.input_size)
+        
+        # inference onnx 
+        input_name = self.artifacts.model.get_inputs()[0].name
+        output_name = [out.name for out in self.artifacts.model.get_outputs()]
+        predicts = self.artifacts.model.run(output_name, {input_name: processing_img})  
+        
+        # postprocessing predicts
+        predicts = pre_post_processing.post_processing(predicts, scale_factors, img_ori_size, categories = self.artifacts.categories)
+        return predicts
+        
+        
+
 
