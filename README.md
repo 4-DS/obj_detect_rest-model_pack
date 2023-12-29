@@ -6,33 +6,5 @@ During the CV Pipeline Model_Pack stage, the following steps take place:
 2. Packaging into bentoservice     
    After model conversion, the model weights and all necessary artifacts (e.g., test image, predictions on the test image) are packaged into bentoservice. Packaging into bentoservice allows creating a containerized application that can be easily deployed and used for inference (prediction) on new data.
 
-Input data for step CV-Pipeline: model_pack
-- **obj_detect_inference_files**     
-Saved weights of the trained model (weights of the last epoch and with the best achieved metrics), configuration files from the previous CV-Pipeline step (model_train)
-
-The output of this step CV-Pipeline is
-- **bento_service**     
-bento_service, packaged model service via BentoML (saved as a zip archive)
-
-## How to run a step CV-Pipeline: model_pack
-
-### Create a directory for the project (or use an existing one)
-```
-mkdir -p obj_detect_rest
-cd obj_detect_rest
-```  
-
-### clone the repository: model_pack
-```
-git clone --recurse-submodules https://github.com/4-DS/obj_detect_rest-model_pack.git{dir_for_model_pack}
-cd {dir_for_model_pack}
-```  
-
-### run step CV-Pipeline:model_pack
-```
-python step.dev.py
-```  
-or
-```
-step.prod.py
-``` 
+Input and output for the CV pipeline step:     
+<a id="blob-path" href="https://github.com/4-DS/obj_detect_rest-model_pack/blob/main/model_pack.ipynb?short_path=2d7e5f2#L57C1-L92C17">model_pack.ipynb</a>
