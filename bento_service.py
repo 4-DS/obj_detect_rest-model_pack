@@ -22,14 +22,8 @@ pre_post_processing = PrePostProcessing()
     JSONArtifact("input_size")
     
     ]) # for versions of bentoml 0.13 and newer
-    
 @SinaraOnnxBentoService()
 class ModelService(BentoService): 
-    
-    @api(input=JsonInput(), batch=False)
-    def service_version(self, *args): 
-        """ Return version of a running service """
-        return self.artifacts.service_version
     
     @api(input=JsonInput())
     def test_data(self, *args): # return some data for running a test
