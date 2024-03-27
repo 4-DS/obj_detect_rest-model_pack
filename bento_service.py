@@ -12,7 +12,7 @@ pre_post_processing = PrePostProcessing()
 
 @env(infer_pip_packages=True)
 @artifacts([
-    OnnxModelArtifact('model', backend='onnxruntime'),
+    OnnxModelArtifact('model', backend='onnxruntime-gpu'),
     BinaryFileArtifact('test_image', file_extension='.jpg'),
     BinaryFileArtifact('test_result', file_extension=".pkl"),
     TextFileArtifact('service_version',
