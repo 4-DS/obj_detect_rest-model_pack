@@ -1,0 +1,30 @@
+{
+    "pipeline_params":
+    {
+        "env_name":"user",
+        "pipeline_name":"obj_detect_rest",
+        "zone_name":"test"
+    },
+    "step_params":
+    {
+        "export_params":
+                 {
+                    "iou_threshold"              : 0.5,
+                    "keep_top_k"                 : 100,
+                    "max_output_boxes_per_class" : 200,
+                    "pre_top_k"                  : 1000,
+                    "score_threshold"            : 0.01
+                }
+    },
+    "substeps_params":
+    [        
+        {
+            "substep_name":"model_pack.ipynb",
+            "substep_params":
+            {
+                "save_best": false,
+                "device": "cuda:0"
+            }
+        }
+    ]
+}
